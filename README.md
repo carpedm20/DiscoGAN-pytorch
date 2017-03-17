@@ -67,6 +67,8 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 ### Edges2shoes dataset
 
+**Fully trained results will be updated soon** *and the paper is lack of hyperparameters so I made a guess at them. (# of conv and deconv features)*
+
 **# iteration: 1000**: `G_AB(x_A)` and `G_BA(x_B)`
 
 <img src="./assets/edges2shoes_AB_1000.png" width="40%"> <img src="./assets/edges2shoes_BA_1000.png" width="40%">
