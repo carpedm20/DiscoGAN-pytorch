@@ -10,7 +10,7 @@ PyTorch implementation of [Learning to Discover Cross-Domain Relations with Gene
 - Python 2.7
 - [Pillow](https://pillow.readthedocs.io/en/4.0.x/)
 - [tqdm](https://github.com/tqdm/tqdm)
-- [pytorch](https://github.com/pytorch/pytorch)
+- [PyTorch](https://github.com/pytorch/pytorch)
 
 
 ## Usage
@@ -51,6 +51,8 @@ To test a model:
 ## Results
 
 ### Toy dataset
+
+Result of samples from 2-dimentional Gaussian mixture models.
 
 <img src="./assets/toy_before.png" width="40%">
 <img src="./assets/toy_after.png" width="40%">
