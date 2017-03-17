@@ -1,9 +1,10 @@
 import sys
+import torch
 import numpy as np
-import tensorflow as tf
 
 from trainer import Trainer
 from config import get_config
+from data_loader import get_loader
 from utils import prepare_dirs_and_logger, save_config
 
 config = None
@@ -11,17 +12,13 @@ config = None
 def main(_):
     prepare_dirs_and_logger(config)
 
-    if not config.task.lower().startswith('tsp'):
-        raise Exception("[!] Task should starts with TSP")
-
-    if config.max_enc_length is None:
-        config.max_enc_length = config.max_data_length
-    if config.max_dec_length is None:
-        config.max_dec_length = config.max_data_length
-
     rng = np.random.RandomState(config.random_seed)
-    tf.set_random_seed(config.random_seed)
 
+    torch.manual_seed(config.random_seed)
+    if config.cuda:
+        torch.cuda.manual_seed(config.random_seed)
+
+    get_loader(config.dataset, )
     trainer = Trainer(config, rng)
     save_config(config.model_dir, config)
 

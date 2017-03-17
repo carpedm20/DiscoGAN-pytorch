@@ -8,26 +8,41 @@ PyTorch implementation of [Learning to Discover Cross-Domain Relations with Gene
 ## Requirements
 
 - Python 2.7
+- [Pillow](https://pillow.readthedocs.io/en/4.0.x/)
 - [tqdm](https://github.com/tqdm/tqdm)
 - [pytorch](https://github.com/pytorch/pytorch)
 
 
 ## Usage
 
-First, download datasets (from [pix2pix](https://github.com/phillipi/pix2pix)) with:
+First download datasets (from [pix2pix](https://github.com/phillipi/pix2pix)) with:
 
-    $ bash ./datasets/download_dataset.sh dataset_name
+    $ bash ./data/download_dataset.sh dataset_name
 
 - `facades`: 400 images from [CMP Facades dataset](http://cmp.felk.cvut.cz/~tylecr1/facade/).
 - `cityscapes`: 2975 images from the [Cityscapes training set](https://www.cityscapes-dataset.com/).
 - `maps`: 1096 training images scraped from Google Maps
-- `edges2shoes`: 50k training images from [UT Zappos50K dataset](http://vision.cs.utexas.edu/projects/finegrained/utzap50k/). Edges are computed by [HED](https://github.com/s9xie/hed) edge detector + post-processing.
-- `edges2handbags`: 137K Amazon Handbag images from [iGAN project](https://github.com/junyanz/iGAN). Edges are computed by [HED](https://github.com/s9xie/hed) edge detector + post-processing.
+- `edges2shoes`: 50k training images from [UT Zappos50K dataset](http://vision.cs.utexas.edu/projects/finegrained/utzap50k/).
+- `edges2handbags`: 137K Amazon Handbag images from [iGAN project](https://github.com/junyanz/iGAN).
+
+or you can use your own dataset by placing images like:
+
+    data
+    ├── YOUR_DATASET_NAME
+    │   ├── A
+    │   |   ├── xxx.jpg (name doesn't matter)
+    │   |   ├── yyy.jpg
+    │   |   └── ...
+    │   └── B
+    │       ├── zzz.jpg
+    │       ├── www.jpg
+    │       └── ...
+    └── download_dataset.sh
 
 To train a model:
 
-    $ python main.py --dataset=shoes
-    $ python main.py --dataset=facades
+    $ python main.py --dataset=edges2shoes
+    $ python main.py --dataset=YOUR_DATASET_NAME
 
 To test a model:
 

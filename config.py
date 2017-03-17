@@ -20,13 +20,8 @@ net_arg.add_argument('--fc_hidden_dim', type=int, default=128, help='only for to
 
 # Data
 data_arg = add_argument_group('Data')
-data_arg.add_argument('--task', type=str, default='tsp')
-data_arg.add_argument('--batch_size', type=int, default=128)
-data_arg.add_argument('--min_data_length', type=int, default=5)
-data_arg.add_argument('--max_data_length', type=int, default=10)
-data_arg.add_argument('--train_num', type=int, default=1000000)
-data_arg.add_argument('--valid_num', type=int, default=1000)
-data_arg.add_argument('--test_num', type=int, default=1000)
+data_arg.add_argument('--dataset', type=str, default='edges2handbags')
+data_arg.add_argument('--batch_size', type=int, default=200)
 
 # Training / test parameters
 train_arg = add_argument_group('Training')
