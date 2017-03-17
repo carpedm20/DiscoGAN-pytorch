@@ -5,8 +5,9 @@ from torch.autograd import Variable
 from torch.utils.data import TensorDataset, DataLoader
 
 class GeneratorCNN(nn.Module):
-    def __init__(self, input_channel, output_channel, conv_dims, deconv_dims):
+    def __init__(self, input_channel, output_channel, conv_dims, deconv_dims, num_gpu):
         super(GeneratorCNN, self).__init__()
+        self.num_gpu = num_gpu
         self.layers = []
 
         prev_dim = conv_dims[0]
@@ -27,15 +28,22 @@ class GeneratorCNN(nn.Module):
         self.layers.append(nn.ConvTranspose2d(prev_dim, output_channel, 4, 2, 1, bias=False))
         self.layer_module = ListModule(*self.layers)
         
-    def forward(self, x):
+    def main(self, x):
         out = x
         for layer in self.layers:
             out = layer(out)
         return out
 
+    def forward(self, x):
+        gpu_ids = None
+        if isinstance(x.data, torch.cuda.FloatTensor) and self.num_gpu > 1:
+            gpu_ids = range(self.num_gpu)
+        return nn.parallel.data_parallel(self.main, x, gpu_ids)
+
 class DiscriminatorCNN(nn.Module):
-    def __init__(self, input_channel, output_channel, hidden_dims):
+    def __init__(self, input_channel, output_channel, hidden_dims, num_gpu):
         super(DiscriminatorCNN, self).__init__()
+        self.num_gpu = num_gpu
         self.layers = []
         
         prev_dim = hidden_dims[0]
@@ -52,11 +60,17 @@ class DiscriminatorCNN(nn.Module):
         
         self.layer_module = ListModule(*self.layers)
 
-    def forward(self, x):
+    def main(self, x):
         out = x
         for layer in self.layers:
             out = layer(out)
         return out.view(out.size(0), -1)
+
+    def forward(self, x):
+        gpu_ids = None
+        if isinstance(x.data, torch.cuda.FloatTensor) and self.num_gpu > 1:
+            gpu_ids = range(self.num_gpu)
+        return nn.parallel.data_parallel(self.main, x, gpu_ids)
 
 class GeneratorFC(nn.Module):
     def __init__(self, input_size, output_size, hidden_dims):

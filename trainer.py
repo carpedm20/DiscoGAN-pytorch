@@ -1,12 +1,13 @@
 from __future__ import print_function
 
 import os
+from glob import glob
 from tqdm import trange
 from itertools import chain
 
 import torch
 from torch import nn
-from glob import glob
+import torch.nn.parallel
 import torchvision.utils as vutils
 from torch.autograd import Variable
 
@@ -19,7 +20,7 @@ class Trainer(object):
         self.a_data_loader = a_data_loader
         self.b_data_loader = b_data_loader
 
-        self.use_gpu = config.use_gpu
+        self.num_gpu = config.num_gpu
         self.dataset = config.dataset
 
         self.lr = config.lr
@@ -39,7 +40,7 @@ class Trainer(object):
 
         self.build_model()
 
-        if self.use_gpu:
+        if self.num_gpu > 0:
             self.G_AB.cuda()
             self.G_BA.cuda()
             self.D_A.cuda()
@@ -59,17 +60,25 @@ class Trainer(object):
             a_width, a_height, a_channel = self.a_data_loader.shape
             b_width, b_height, b_channel = self.b_data_loader.shape
 
-            self.G_AB = GeneratorCNN(a_channel, b_channel, [64, 128, 256, 128], [512, 256, 128, 64])
-            self.G_BA = GeneratorCNN(b_channel, a_channel, [64, 128, 256, 128], [512, 256, 128, 64])
+            self.G_AB = GeneratorCNN(
+                    a_channel, b_channel, [64, 128, 256, 512], [512, 256, 128, 64], self.num_gpu)
+            self.G_BA = GeneratorCNN(
+                    b_channel, a_channel, [64, 128, 256, 512], [512, 256, 128, 64], self.num_gpu)
 
-            self.D_A = DiscriminatorCNN(a_channel, 1, [64, 128, 256, 512])
-            self.D_B = DiscriminatorCNN(b_channel, 1, [64, 128, 256, 512])
+            self.D_A = DiscriminatorCNN(
+                    a_channel, 1, [64, 128, 256, 512], self.num_gpu)
+            self.D_B = DiscriminatorCNN(
+                    b_channel, 1, [64, 128, 256, 512], self.num_gpu)
 
     def load_model(self):
         print("[*] Load models from {}...".format(self.load_path))
 
         paths = glob(os.path.join(self.load_path, 'G_AB_*.pth'))
         paths.sort()
+
+        if len(paths) == 0:
+            print("[!] No checkpoint found in {}...".format(self.load_path))
+            return
 
         self.start_step = int(os.path.basename(paths[-1].split('.')[0].split('_')[-1]))
 
@@ -94,7 +103,7 @@ class Trainer(object):
         fake_tensor = Variable(torch.FloatTensor(self.batch_size))
         _ = fake_tensor.data.fill_(fake_label)
 
-        if self.use_gpu:
+        if self.num_gpu > 0:
             d.cuda()
             bce.cuda()
 

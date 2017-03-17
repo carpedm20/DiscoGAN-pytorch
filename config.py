@@ -48,7 +48,7 @@ misc_arg.add_argument('--log_dir', type=str, default='logs')
 misc_arg.add_argument('--data_dir', type=str, default='data')
 misc_arg.add_argument('--output_dir', type=str, default='outputs')
 misc_arg.add_argument('--load_path', type=str, default='')
-misc_arg.add_argument('--use_gpu', type=str2bool, default=True)
+misc_arg.add_argument('--num_gpu', type=str2bool, default=1)
 misc_arg.add_argument('--random_seed', type=int, default=123)
 
 def get_config():

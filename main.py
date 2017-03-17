@@ -9,7 +9,7 @@ def main(config):
     prepare_dirs_and_logger(config)
 
     torch.manual_seed(config.random_seed)
-    if config.use_gpu:
+    if config.num_gpu > 0:
         torch.cuda.manual_seed(config.random_seed)
 
     a_data_loader, b_data_loader = get_loader(

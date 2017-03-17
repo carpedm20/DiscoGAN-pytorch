@@ -41,12 +41,12 @@ or you can use your own dataset by placing images like:
 
 To train a model:
 
-    $ python main.py --dataset=edges2shoes
-    $ python main.py --dataset=YOUR_DATASET_NAME
+    $ python main.py --dataset=edges2shoes --num_gpu=1
+    $ python main.py --dataset=YOUR_DATASET_NAME --num_gpu=4
 
 To test a model (use your `load_path`):
 
-    $ python main.py --load_path=edges2shoes_2017-03-18_02-39-31 --is_train=False
+    $ python main.py --load_path=logs/edges2shoes_2017-03-18_02-39-31 --is_train=False
 
 ## Results
 
