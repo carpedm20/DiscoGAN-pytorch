@@ -85,11 +85,13 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 ### facades dataset
 
-**# iteration: 1000**:
+**# iteration: 1000**, `G_AB(x_A)`:
 
-<img src="./assets/facade_1000.png" width="40%">
+<img src="./assets/facade_AB_1000.png" width="40%">
 
-**# iteration: 10000**:
+**# iteration: 1000**, `G_BA(x_B)`:
+
+<img src="./assets/facade_BA_1000.png" width="40%">
 
 (in progress)
 
