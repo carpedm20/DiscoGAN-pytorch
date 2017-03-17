@@ -18,6 +18,7 @@ net_arg.add_argument('--input_scale_size', type=int, default=64,
                      help='input image will be resized with the given value as width and height')
 net_arg.add_argument('--g_num_layer', type=int, default=3)
 net_arg.add_argument('--d_num_layer', type=int, default=5)
+net_arg.add_argument('--cnn_type', type=int, default=0)
 net_arg.add_argument('--fc_hidden_dim', type=int, default=128, help='only for toy dataset')
 
 # Data

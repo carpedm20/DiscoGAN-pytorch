@@ -29,6 +29,7 @@ class Trainer(object):
         self.optimizer = config.optimizer
         self.batch_size = config.batch_size
         self.weight_decay = config.weight_decay
+        self.cnn_type = config.cnn_type
 
         self.model_dir = config.model_dir
         self.load_path = config.load_path
@@ -60,15 +61,22 @@ class Trainer(object):
             a_width, a_height, a_channel = self.a_data_loader.shape
             b_width, b_height, b_channel = self.b_data_loader.shape
 
+            if self.cnn_type == 0:
+                conv_dims, deconv_dims = [64, 128, 256, 512], [512, 256, 128, 64]
+            elif self.cnn_type == 1:
+                conv_dims, deconv_dims = [32, 64, 128, 256], [256, 128, 64, 32]
+            else:
+                raise Exception("[!] cnn_type {} is not defined".format(self.cnn_type))
+
             self.G_AB = GeneratorCNN(
-                    a_channel, b_channel, [64, 128, 256, 512], [512, 256, 128, 64], self.num_gpu)
+                    a_channel, b_channel, conv_dims, deconv_dims, self.num_gpu)
             self.G_BA = GeneratorCNN(
-                    b_channel, a_channel, [64, 128, 256, 512], [512, 256, 128, 64], self.num_gpu)
+                    b_channel, a_channel, conv_dims, deconv_dims, self.num_gpu)
 
             self.D_A = DiscriminatorCNN(
-                    a_channel, 1, [64, 128, 256, 512], self.num_gpu)
+                    a_channel, 1, conv_dims, self.num_gpu)
             self.D_B = DiscriminatorCNN(
-                    b_channel, 1, [64, 128, 256, 512], self.num_gpu)
+                    b_channel, 1, conv_dims, self.num_gpu)
 
     def load_model(self):
         print("[*] Load models from {}...".format(self.load_path))
