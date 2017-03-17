@@ -7,7 +7,8 @@ from tqdm import tqdm
 import torch
 from torchvision import transforms
 
-PIX2PIX_DATASETS = ['facades', 'edges2shoes', 'edges2handbags']
+PIX2PIX_DATASETS = [
+    'facades', 'cityscapes', 'maps', 'edges2shoes', 'edges2handbags']
 
 def makedirs(path):
     if not os.path.exists(path):
