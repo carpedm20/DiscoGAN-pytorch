@@ -67,11 +67,28 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 ### Edges2shoes dataset
 
-**# iteration: 1000**:
+**# iteration: 1000**: `G_AB(x_A)`
 
-<img src="./assets/edges2shoes_1000.png" width="40%">
+<img src="./assets/edges2shoes_AB_1000.png" width="40%">
+
+**# iteration: 1000**: `G_BA(x_B)`
+
+<img src="./assets/edges2shoes_BA_1000.png" width="40%">
 
 **# iteration: 10000**:
+
+(in progress)
+
+
+### facades dataset
+
+**# iteration: 1000**: `G_AB(x_A)`
+
+<img src="./assets/facade_AB_1000.png" width="40%">
+
+**# iteration: 1000**: `G_BA(x_B)`
+
+<img src="./assets/facade_BA_1000.png" width="40%">
 
 (in progress)
 
@@ -79,19 +96,6 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 ### Edges2handbags dataset
 
 **# iteration: 1000**:
-
-(in progress)
-
-
-### facades dataset
-
-**# iteration: 1000**, `G_AB(x_A)`:
-
-<img src="./assets/facade_AB_1000.png" width="40%">
-
-**# iteration: 1000**, `G_BA(x_B)`:
-
-<img src="./assets/facade_BA_1000.png" width="40%">
 
 (in progress)
 
