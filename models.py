@@ -16,13 +16,13 @@ class GeneratorCNN(nn.Module):
         for out_dim in conv_dims[1:]:
             self.layers.append(nn.Conv2d(prev_dim, out_dim, 4, 2, 1, bias=False))
             self.layers.append(nn.BatchNorm2d(out_dim))
-            self.layers.append(nn.ELU(True))
+            self.layers.append(nn.LeakyReLU(0.2, inplace=True)),
             prev_dim = out_dim
 
         for out_dim in deconv_dims[:-1]:
             self.layers.append(nn.ConvTranspose2d(prev_dim, out_dim, 4, 2, 1, bias=False))
             self.layers.append(nn.BatchNorm2d(out_dim))
-            self.layers.append(nn.ELU(True))
+            self.layers.append(nn.ReLU(True))
             prev_dim = out_dim
 
         self.layers.append(nn.ConvTranspose2d(prev_dim, output_channel, 4, 2, 1, bias=False))
@@ -38,7 +38,10 @@ class GeneratorCNN(nn.Module):
         gpu_ids = None
         if isinstance(x.data, torch.cuda.FloatTensor) and self.num_gpu > 1:
             gpu_ids = range(self.num_gpu)
-        return nn.parallel.data_parallel(self.main, x, gpu_ids)
+        if gpu_ids:
+            return nn.parallel.data_parallel(self.main, x, gpu_ids)
+        else:
+            return self.main(x)
 
 class DiscriminatorCNN(nn.Module):
     def __init__(self, input_channel, output_channel, hidden_dims, num_gpu):
@@ -52,7 +55,7 @@ class DiscriminatorCNN(nn.Module):
         for out_dim in hidden_dims:
             self.layers.append(nn.Conv2d(prev_dim, out_dim, 4, 2, 1, bias=False))
             self.layers.append(nn.BatchNorm2d(out_dim))
-            self.layers.append(nn.ELU(True))
+            self.layers.append(nn.LeakyReLU(0.2, inplace=True)),
             prev_dim = out_dim
             
         self.layers.append(nn.Conv2d(prev_dim, output_channel, 4, 2, 1, bias=False))
@@ -70,7 +73,10 @@ class DiscriminatorCNN(nn.Module):
         gpu_ids = None
         if isinstance(x.data, torch.cuda.FloatTensor) and self.num_gpu > 1:
             gpu_ids = range(self.num_gpu)
-        return nn.parallel.data_parallel(self.main, x, gpu_ids)
+        if gpu_ids:
+            return nn.parallel.data_parallel(self.main, x, gpu_ids)
+        else:
+            return self.main(x)
 
 class GeneratorFC(nn.Module):
     def __init__(self, input_size, output_size, hidden_dims):
