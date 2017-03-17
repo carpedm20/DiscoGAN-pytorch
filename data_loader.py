@@ -35,8 +35,10 @@ def pix2pix_split_images(root):
         image = Image.open(os.path.join(path)).convert('RGB')
         data = np.array(image)
 
-        a_image = Image.fromarray(data[:,:256].astype(np.uint8))
-        b_image = Image.fromarray(data[:,256:].astype(np.uint8))
+        height, width, channel = data.shape
+
+        a_image = Image.fromarray(data[:,:width/2].astype(np.uint8))
+        b_image = Image.fromarray(data[:,width/2:].astype(np.uint8))
 
         a_image.save(a_image_path)
         b_image.save(b_image_path)

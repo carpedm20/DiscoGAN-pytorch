@@ -58,8 +58,8 @@ class Trainer(object):
             self.D_A = DiscriminatorFC(2, 1, [config.fc_hidden_dim] * config.d_num_layer)
             self.D_B = DiscriminatorFC(2, 1, [config.fc_hidden_dim] * config.d_num_layer)
         else:
-            a_width, a_height, a_channel = self.a_data_loader.shape
-            b_width, b_height, b_channel = self.b_data_loader.shape
+            a_height, a_width, a_channel = self.a_data_loader.shape
+            b_height, b_width, b_channel = self.b_data_loader.shape
 
             if self.cnn_type == 0:
                 conv_dims, deconv_dims = [64, 128, 256, 512], [512, 256, 128, 64]

@@ -54,7 +54,7 @@ To test a model (use your `load_path`):
 
 ### Toy dataset
 
-Result of samples from 2-dimentional Gaussian mixture models.
+Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook](./notebooks/DiscoGAN.ipynb)
 
 **# iteration: 0**:
 
