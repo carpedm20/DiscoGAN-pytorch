@@ -2,7 +2,7 @@
 
 PyTorch implementation of [Learning to Discover Cross-Domain Relations with Generative Adversarial Networks](https://arxiv.org/abs/1703.05192).
 
-![model](./assets/model.png)
+<img src="./assets/model.png" width="80%">
 
 
 ## Requirements
@@ -11,6 +11,7 @@ PyTorch implementation of [Learning to Discover Cross-Domain Relations with Gene
 - [Pillow](https://pillow.readthedocs.io/en/4.0.x/)
 - [tqdm](https://github.com/tqdm/tqdm)
 - [PyTorch](https://github.com/pytorch/pytorch)
+- [torch-vision](https://github.com/pytorch/vision)
 
 
 ## Usage
@@ -48,16 +49,29 @@ To test a model (use your `load_path`):
 
     $ python main.py --load_path=logs/edges2shoes_2017-03-18_02-39-31 --is_train=False
 
+
 ## Results
 
 ### Toy dataset
 
 Result of samples from 2-dimentional Gaussian mixture models.
 
+**# iteration: 0**:
+
 <img src="./assets/toy_before.png" width="40%">
+
+**# iteration: 10000**:
+
 <img src="./assets/toy_after.png" width="40%">
 
-### Shoe dataset
+
+### Edges2shoes dataset
+
+**# iteration: 1000**:
+
+<img src="./assets/edges2shoes_1000.png"  width="40%">
+
+**# iteration: 10000**:
 
 (in progress)
 

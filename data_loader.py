@@ -46,6 +46,9 @@ class Dataset(torch.utils.data.Dataset):
         self.root = root
         self.name = os.path.basename(root)
 
+        if not os.path.exists(self.root):
+            raise Exception("[!] {} not exists.".format(root))
+
         if self.name in PIX2PIX_DATASETS:
             pix2pix_split_images(self.root)
 
@@ -65,7 +68,7 @@ class Dataset(torch.utils.data.Dataset):
         return len(self.paths)
 
 def get_loader(root, batch_size, scale_size, num_workers=2, shuffle=True):
-    a_data_set, b_data_set = Dataset(root, scale_size, "A"), Dataset(root, scale_size, "A")
+    a_data_set, b_data_set = Dataset(root, scale_size, "A"), Dataset(root, scale_size, "B")
     a_data_loader = torch.utils.data.DataLoader(dataset=a_data_set,
                                                 batch_size=batch_size,
                                                 shuffle=True,
@@ -74,7 +77,6 @@ def get_loader(root, batch_size, scale_size, num_workers=2, shuffle=True):
                                                 batch_size=batch_size,
                                                 shuffle=True,
                                                 num_workers=num_workers)
-
     a_data_loader.shape = a_data_set.shape
     b_data_loader.shape = b_data_set.shape
 

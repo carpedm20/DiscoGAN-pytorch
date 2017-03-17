@@ -16,13 +16,13 @@ class GeneratorCNN(nn.Module):
         for out_dim in conv_dims[1:]:
             self.layers.append(nn.Conv2d(prev_dim, out_dim, 4, 2, 1, bias=False))
             self.layers.append(nn.BatchNorm2d(out_dim))
-            self.layers.append(nn.ReLU(True))
+            self.layers.append(nn.ELU(True))
             prev_dim = out_dim
 
         for out_dim in deconv_dims[:-1]:
             self.layers.append(nn.ConvTranspose2d(prev_dim, out_dim, 4, 2, 1, bias=False))
             self.layers.append(nn.BatchNorm2d(out_dim))
-            self.layers.append(nn.ReLU(True))
+            self.layers.append(nn.ELU(True))
             prev_dim = out_dim
 
         self.layers.append(nn.ConvTranspose2d(prev_dim, output_channel, 4, 2, 1, bias=False))
@@ -52,7 +52,7 @@ class DiscriminatorCNN(nn.Module):
         for out_dim in hidden_dims:
             self.layers.append(nn.Conv2d(prev_dim, out_dim, 4, 2, 1, bias=False))
             self.layers.append(nn.BatchNorm2d(out_dim))
-            self.layers.append(nn.ReLU(True))
+            self.layers.append(nn.ELU(True))
             prev_dim = out_dim
             
         self.layers.append(nn.Conv2d(prev_dim, output_channel, 4, 2, 1, bias=False))
