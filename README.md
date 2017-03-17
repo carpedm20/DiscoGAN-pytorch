@@ -69,7 +69,25 @@ Result of samples from 2-dimentional Gaussian mixture models.
 
 **# iteration: 1000**:
 
-<img src="./assets/edges2shoes_1000.png"  width="40%">
+<img src="./assets/edges2shoes_1000.png" width="40%">
+
+**# iteration: 10000**:
+
+(in progress)
+
+
+### Edges2handbags dataset
+
+**# iteration: 1000**:
+
+(in progress)
+
+
+### facades dataset
+
+**# iteration: 1000**:
+
+<img src="./assets/facade_1000.png" width="40%">
 
 **# iteration: 10000**:
 
