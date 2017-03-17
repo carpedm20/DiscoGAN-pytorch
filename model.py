@@ -5,17 +5,20 @@ from torch.autograd import Variable
 from torch.utils.data import TensorDataset, DataLoader
 
 class GeneratorCNN(nn.Module):
-    def __init__(self, input_size, output_size, hidden_dims):
+    def __init__(self, input_channel, output_size, hidden_dims=[]):
         super(Generator, self).__init__()
         self.layers = []
+
+        prev_dim = hidden_dims[0]
+        self.layers.append(nn.ConvTranspose2d(input_channel, prev_dim, 4, 1, 0, bias=False))
         
-        prev_dim = input_size
-        for hidden_dim in hidden_dims:
-            self.layers.append(nn.Linear(prev_dim, hidden_dim))
+        for out_dim in hidden_dims[1:]:
+            self.layers.append(nn.ConvTranspose2d(prev_dim, out_dim, 4, 1, 0, bias=False))
+            self.layers.append(nn.BatchNorm2d(ngf * 8))
             self.layers.append(nn.ReLU(True))
-            prev_dim = hidden_dim
-        self.layers.append(nn.Linear(prev_dim, output_size))
-        
+            prev_dim = out_dim
+
+        self.layers.append(nn.ConvTranspose2d(prev_dim, input_channel))
         self.layer_module = ListModule(*self.layers)
         
     def forward(self, x):
@@ -25,17 +28,20 @@ class GeneratorCNN(nn.Module):
         return out
 
 class DiscriminatorCNN(nn.Module):
-    def __init__(self, input_size, output_size, hidden_dims):
+    def __init__(self, input_channel, output_size, hidden_dims):
         super(Discriminator, self).__init__()
         self.layers = []
         
-        prev_dim = input_size
-        for idx, hidden_dim in enumerate(hidden_dims):
-            self.layers.append(nn.Linear(prev_dim, hidden_dim))
+        prev_dim = hidden_dims[0]
+        self.layers.append(nn.Conv2d(input_channel, prev_dim, 4, 1, 0, bias=False))
+
+        for out_dim in hidden_dims[1:]:
+            self.layers.append(nn.Conv2d(prev_dim, out_dim, 4, 1, 0, bias=False))
+            self.layers.append(nn.BatchNorm2d(ngf * 8))
             self.layers.append(nn.ReLU(True))
-            prev_dim = hidden_dim
+            prev_dim = out_dim
             
-        self.layers.append(nn.Linear(prev_dim, output_size))
+        self.layers.append(nn.Conv2d(prev_dim, 1, 4, 1, 0, bias=False))
         self.layers.append(nn.Sigmoid())
         
         self.layer_module = ListModule(*self.layers)

@@ -1,6 +1,4 @@
-import sys
 import torch
-import numpy as np
 
 from trainer import Trainer
 from config import get_config
@@ -10,17 +8,15 @@ from utils import prepare_dirs_and_logger, save_config
 def main(config):
     prepare_dirs_and_logger(config)
 
-    rng = np.random.RandomState(config.random_seed)
-
     torch.manual_seed(config.random_seed)
     if config.use_gpu:
         torch.cuda.manual_seed(config.random_seed)
 
-    get_loader(config.data_path, config.batch_size)
-    trainer = Trainer(config, rng)
-    save_config(config.model_dir, config)
+    a_data_loader, b_data_loader = get_loader(config.data_path, config.batch_size)
+    trainer = Trainer(config, a_data_loader, b_data_loader)
 
     if config.is_train:
+        save_config(config)
         trainer.train()
     else:
         if not config.load_path:

@@ -34,10 +34,10 @@ def prepare_dirs_and_logger(config):
 def get_time():
     return datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-def save_config(model_dir, config):
-    param_path = os.path.join(model_dir, "params.json")
+def save_config(config):
+    param_path = os.path.join(config.model_dir, "params.json")
 
-    tf.logging.info("MODEL dir: %s" % model_dir)
+    tf.logging.info("MODEL dir: %s" % config.model_dir)
     tf.logging.info("PARAM path: %s" % param_path)
 
     with open(param_path, 'w') as fp:

@@ -3,8 +3,10 @@ from torch import nn
 from torch.autograd import Variable
 
 class Trainer(object):
-    def __init__(self, config):
+    def __init__(self, a_data_loader, b_data_loader):
         self.config = config
+        self.a_data_loader = a_data_loader
+        self.b_data_loader = b_data_loader
 
         self.use_gpu = config.use_gpu
         self.dataset = config.dataset
