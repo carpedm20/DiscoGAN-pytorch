@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import json
 import logging
@@ -37,8 +39,8 @@ def get_time():
 def save_config(config):
     param_path = os.path.join(config.model_dir, "params.json")
 
-    tf.logging.info("MODEL dir: %s" % config.model_dir)
-    tf.logging.info("PARAM path: %s" % param_path)
+    print("MODEL dir: %s" % config.model_dir)
+    print("PARAM path: %s" % param_path)
 
     with open(param_path, 'w') as fp:
         json.dump(config.__dict__, fp, indent=4, sort_keys=True)

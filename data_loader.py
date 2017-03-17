@@ -5,8 +5,7 @@ from PIL import Image
 from tqdm import tqdm
 
 import torch
-import torch.utils.data as data
-import torchvision.transforms as transforms
+from torchvision import transforms
 
 PIX2PIX_DATASETS = ['facades', 'edges2shoes', 'edges2handbags']
 
@@ -41,8 +40,8 @@ def pix2pix_split_images(root):
         a_image.save(a_image_path)
         b_image.save(b_image_path)
 
-class Dataset(data.Dataset):
-    def __init__(self, root, data_type):
+class Dataset(torch.utils.data.Dataset):
+    def __init__(self, root, scale_size, data_type):
         self.root = root
         self.name = os.path.basename(root)
 
@@ -50,23 +49,32 @@ class Dataset(data.Dataset):
             pix2pix_split_images(self.root)
 
         self.paths = glob(os.path.join(self.root, '{}/*'.format(data_type)))
+        self.shape = list(Image.open(self.paths[0]).size) + [3]
+
+        self.transform = transforms.Compose([
+            transforms.Scale(scale_size), 
+            transforms.ToTensor(), 
+        ])
 
     def __getitem__(self, index):
-        image = Image.open(os.path.join(self.root, path)).convert('RGB')
-        if self.transform is not None:
-            image = transforms.ToTensor(image)
-        return image, []
+        image = Image.open(self.paths[index]).convert('RGB')
+        return self.transform(image)
 
     def __len__(self):
         return len(self.paths)
 
-def get_loader(root, batch_size, shuffle=True, num_workers=2):
-    a_data_loader = torch.utils.data.DataLoader(dataset=Dataset(root, "A"),
+def get_loader(root, batch_size, scale_size, num_workers=2, shuffle=True):
+    a_data_set, b_data_set = Dataset(root, scale_size, "A"), Dataset(root, scale_size, "A")
+    a_data_loader = torch.utils.data.DataLoader(dataset=a_data_set,
                                                 batch_size=batch_size,
                                                 shuffle=True,
                                                 num_workers=num_workers)
-    b_data_loader = torch.utils.data.DataLoader(dataset=Dataset(root, "B"),
+    b_data_loader = torch.utils.data.DataLoader(dataset=b_data_set,
                                                 batch_size=batch_size,
                                                 shuffle=True,
                                                 num_workers=num_workers)
+
+    a_data_loader.shape = a_data_set.shape
+    b_data_loader.shape = b_data_set.shape
+
     return a_data_loader, b_data_loader

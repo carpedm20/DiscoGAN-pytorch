@@ -44,9 +44,9 @@ To train a model:
     $ python main.py --dataset=edges2shoes
     $ python main.py --dataset=YOUR_DATASET_NAME
 
-To test a model:
+To test a model (use your `load_path`):
 
-    $ python main.py --load_path=### --is_train=False
+    $ python main.py --load_path=edges2shoes_2017-03-18_02-39-31 --is_train=False
 
 ## Results
 

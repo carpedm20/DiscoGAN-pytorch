@@ -12,7 +12,8 @@ def main(config):
     if config.use_gpu:
         torch.cuda.manual_seed(config.random_seed)
 
-    a_data_loader, b_data_loader = get_loader(config.data_path, config.batch_size)
+    a_data_loader, b_data_loader = get_loader(
+            config.data_path, config.batch_size, config.input_scale_size, config.num_worker)
     trainer = Trainer(config, a_data_loader, b_data_loader)
 
     if config.is_train:

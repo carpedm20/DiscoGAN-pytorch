@@ -14,6 +14,8 @@ def add_argument_group(name):
 
 # Network
 net_arg = add_argument_group('Network')
+net_arg.add_argument('--input_scale_size', type=int, default=64,
+                     help='input image will be resized with the given value as width and height')
 net_arg.add_argument('--g_num_layer', type=int, default=3)
 net_arg.add_argument('--d_num_layer', type=int, default=5)
 net_arg.add_argument('--fc_hidden_dim', type=int, default=128, help='only for toy dataset')
@@ -22,6 +24,9 @@ net_arg.add_argument('--fc_hidden_dim', type=int, default=128, help='only for to
 data_arg = add_argument_group('Data')
 data_arg.add_argument('--dataset', type=str, default='edges2shoes')
 data_arg.add_argument('--batch_size', type=int, default=200)
+data_arg.add_argument('--a_grayscale', type=str2bool, default=False)
+data_arg.add_argument('--b_grayscale', type=str2bool, default=False)
+data_arg.add_argument('--num_worker', type=int, default=12)
 
 # Training / test parameters
 train_arg = add_argument_group('Training')
@@ -31,10 +36,12 @@ train_arg.add_argument('--max_step', type=int, default=500000)
 train_arg.add_argument('--lr', type=float, default=0.0002)
 train_arg.add_argument('--beta1', type=float, default=0.5)
 train_arg.add_argument('--beta2', type=float, default=0.999)
+train_arg.add_argument('--weight_decay', type=float, default=0.0001)
 
 # Misc
 misc_arg = add_argument_group('Misc')
 misc_arg.add_argument('--log_step', type=int, default=50)
+misc_arg.add_argument('--save_step', type=int, default=500)
 misc_arg.add_argument('--num_log_samples', type=int, default=3)
 misc_arg.add_argument('--log_level', type=str, default='INFO', choices=['INFO', 'DEBUG', 'WARN'])
 misc_arg.add_argument('--log_dir', type=str, default='logs')

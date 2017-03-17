@@ -5,20 +5,26 @@ from torch.autograd import Variable
 from torch.utils.data import TensorDataset, DataLoader
 
 class GeneratorCNN(nn.Module):
-    def __init__(self, input_channel, output_size, hidden_dims=[]):
-        super(Generator, self).__init__()
+    def __init__(self, input_channel, output_channel, conv_dims, deconv_dims):
+        super(GeneratorCNN, self).__init__()
         self.layers = []
 
-        prev_dim = hidden_dims[0]
-        self.layers.append(nn.ConvTranspose2d(input_channel, prev_dim, 4, 1, 0, bias=False))
+        prev_dim = conv_dims[0]
+        self.layers.append(nn.Conv2d(input_channel, prev_dim, 4, 2, 1, bias=False))
         
-        for out_dim in hidden_dims[1:]:
-            self.layers.append(nn.ConvTranspose2d(prev_dim, out_dim, 4, 1, 0, bias=False))
-            self.layers.append(nn.BatchNorm2d(ngf * 8))
+        for out_dim in conv_dims[1:]:
+            self.layers.append(nn.Conv2d(prev_dim, out_dim, 4, 2, 1, bias=False))
+            self.layers.append(nn.BatchNorm2d(out_dim))
             self.layers.append(nn.ReLU(True))
             prev_dim = out_dim
 
-        self.layers.append(nn.ConvTranspose2d(prev_dim, input_channel))
+        for out_dim in deconv_dims[:-1]:
+            self.layers.append(nn.ConvTranspose2d(prev_dim, out_dim, 4, 2, 1, bias=False))
+            self.layers.append(nn.BatchNorm2d(out_dim))
+            self.layers.append(nn.ReLU(True))
+            prev_dim = out_dim
+
+        self.layers.append(nn.ConvTranspose2d(prev_dim, output_channel, 4, 2, 1, bias=False))
         self.layer_module = ListModule(*self.layers)
         
     def forward(self, x):
@@ -28,20 +34,20 @@ class GeneratorCNN(nn.Module):
         return out
 
 class DiscriminatorCNN(nn.Module):
-    def __init__(self, input_channel, output_size, hidden_dims):
-        super(Discriminator, self).__init__()
+    def __init__(self, input_channel, output_channel, hidden_dims):
+        super(DiscriminatorCNN, self).__init__()
         self.layers = []
         
         prev_dim = hidden_dims[0]
-        self.layers.append(nn.Conv2d(input_channel, prev_dim, 4, 1, 0, bias=False))
+        self.layers.append(nn.Conv2d(input_channel, prev_dim, 4, 2, 1, bias=False))
 
-        for out_dim in hidden_dims[1:]:
-            self.layers.append(nn.Conv2d(prev_dim, out_dim, 4, 1, 0, bias=False))
-            self.layers.append(nn.BatchNorm2d(ngf * 8))
+        for out_dim in hidden_dims:
+            self.layers.append(nn.Conv2d(prev_dim, out_dim, 4, 2, 1, bias=False))
+            self.layers.append(nn.BatchNorm2d(out_dim))
             self.layers.append(nn.ReLU(True))
             prev_dim = out_dim
             
-        self.layers.append(nn.Conv2d(prev_dim, 1, 4, 1, 0, bias=False))
+        self.layers.append(nn.Conv2d(prev_dim, output_channel, 4, 2, 1, bias=False))
         self.layers.append(nn.Sigmoid())
         
         self.layer_module = ListModule(*self.layers)
@@ -50,11 +56,11 @@ class DiscriminatorCNN(nn.Module):
         out = x
         for layer in self.layers:
             out = layer(out)
-        return out.view(-1, 1)
+        return out.view(out.size(0), -1)
 
 class GeneratorFC(nn.Module):
     def __init__(self, input_size, output_size, hidden_dims):
-        super(Generator, self).__init__()
+        super(GeneratorFC, self).__init__()
         self.layers = []
         
         prev_dim = input_size
@@ -74,7 +80,7 @@ class GeneratorFC(nn.Module):
 
 class DiscriminatorFC(nn.Module):
     def __init__(self, input_size, output_size, hidden_dims):
-        super(Discriminator, self).__init__()
+        super(DiscriminatorFC, self).__init__()
         self.layers = []
         
         prev_dim = input_size
