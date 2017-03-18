@@ -93,25 +93,28 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 ### 4. Facades dataset
 
-**# iteration: 2000**:
+**# iteration: 19450**:
 
 `x_A` -> `G_AB(x_A)`
 
-<img src="assets/facades_valid_x_B.png" width="40%"> <img src="assets/facades_x_BA_2500.png" width="40%">
+<img src="assets/facades_valid_x_B.png" width="40%"> <img src="assets/facades_x_BA_19450.png" width="40%">
 
 `x_B` -> `G_BA(x_B)`
 
-<img src="assets/facades_valid_x_A.png" width="40%"> <img src="assets/facades_x_AB_2500.png" width="40%">
+<img src="assets/facades_valid_x_A.png" width="40%"> <img src="assets/facades_x_AB_19450.png" width="40%">
 
 
-(in progress)
+### 5. Cityscapes dataset
 
+**# iteration: 8350**:
 
-### Edges2handbags dataset
+`x_A` -> `G_AB(x_A)`
 
-**# iteration: 1000**:
+<img src="assets/cityscapes_valid_x_B.png" width="40%"> <img src="assets/cityscapes_x_BA_8350.png" width="40%">
 
-(in progress)
+`x_B` -> `G_BA(x_B)`
+
+<img src="assets/cityscapes_valid_x_A.png" width="40%"> <img src="assets/cityscapes_x_AB_8350.png" width="40%">
 
 
 ## Author
