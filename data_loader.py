@@ -60,6 +60,7 @@ class Dataset(torch.utils.data.Dataset):
         self.transform = transforms.Compose([
             transforms.Scale(scale_size), 
             transforms.ToTensor(), 
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ])
 
     def __getitem__(self, index):

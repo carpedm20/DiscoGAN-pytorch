@@ -13,6 +13,14 @@ from torch.autograd import Variable
 
 from models import *
 
+def weights_init(m):
+    classname = m.__class__.__name__
+    if classname.find('Conv') != -1:
+        m.weight.data.normal_(0.0, 0.02)
+    elif classname.find('BatchNorm') != -1:
+        m.weight.data.normal_(1.0, 0.02)
+        m.bias.data.fill_(0)
+
 class Trainer(object):
     def __init__(self, config, a_data_loader, b_data_loader):
         self.config = config
@@ -62,9 +70,11 @@ class Trainer(object):
             b_height, b_width, b_channel = self.b_data_loader.shape
 
             if self.cnn_type == 0:
-                conv_dims, deconv_dims = [64, 128, 256, 512], [512, 256, 128, 64]
+                #conv_dims, deconv_dims = [64, 128, 256, 512], [512, 256, 128, 64]
+                conv_dims, deconv_dims = [64, 128, 256, 512], [256, 128, 64]
             elif self.cnn_type == 1:
-                conv_dims, deconv_dims = [32, 64, 128, 256], [256, 128, 64, 32]
+                #conv_dims, deconv_dims = [32, 64, 128, 256], [256, 128, 64, 32]
+                conv_dims, deconv_dims = [32, 64, 128, 256], [128, 64, 32]
             else:
                 raise Exception("[!] cnn_type {} is not defined".format(self.cnn_type))
 
@@ -77,6 +87,12 @@ class Trainer(object):
                     a_channel, 1, conv_dims, self.num_gpu)
             self.D_B = DiscriminatorCNN(
                     b_channel, 1, conv_dims, self.num_gpu)
+
+            self.G_AB.apply(weights_init)
+            self.G_BA.apply(weights_init)
+
+            self.D_A.apply(weights_init)
+            self.D_B.apply(weights_init)
 
     def load_model(self):
         print("[*] Load models from {}...".format(self.load_path))
@@ -131,6 +147,13 @@ class Trainer(object):
             lr=self.lr, betas=(self.beta1, self.beta2))
 
         A_loader, B_loader = iter(self.a_data_loader), iter(self.b_data_loader)
+        valid_x_A, valid_x_B = Variable(A_loader.next()), Variable(B_loader.next())
+
+        if self.num_gpu > 0:
+            valid_x_A, valid_x_B = valid_x_A.cuda(), valid_x_B.cuda()
+
+        vutils.save_image(valid_x_A.data, '{}/valid_x_A.png'.format(self.model_dir))
+        vutils.save_image(valid_x_B.data, '{}/valid_x_B.png'.format(self.model_dir))
 
         for step in trange(self.start_step, self.max_step):
             try:
@@ -139,9 +162,12 @@ class Trainer(object):
                 A_loader, B_loader = iter(self.a_data_loader), iter(self.b_data_loader)
                 x_A, x_B = A_loader.next(), B_loader.next()
 
-            x_A, x_B = Variable(x_A.cuda()), Variable(x_B.cuda())
-            batch_size = x_A.size(0)
+            if self.num_gpu > 0:
+                x_A, x_B = Variable(x_A.cuda()), Variable(x_B.cuda())
+            else:
+                x_A, x_B = Variable(x_A), Variable(x_B)
 
+            batch_size = x_A.size(0)
             real_tensor.data.resize_(batch_size).fill_(real_label)
             fake_tensor.data.resize_(batch_size).fill_(fake_label)
 
@@ -199,10 +225,16 @@ class Trainer(object):
                       format(step, self.max_step, l_const_A.data[0], l_const_B.data[0],  
                              l_gan_A.data[0], l_gan_B.data[0]))
 
-                vutils.save_image(x_AB.data, '{}/x_AB_{}.png'.format(self.model_dir, step))
-                vutils.save_image(x_BA.data, '{}/x_BA_{}.png'.format(self.model_dir, step))
-                vutils.save_image(x_ABA.data, '{}/x_ABA_{}.png'.format(self.model_dir, step))
-                vutils.save_image(x_BAB.data, '{}/x_BAB_{}.png'.format(self.model_dir, step))
+                valid_x_AB = self.G_AB(valid_x_A)
+                valid_x_BA = self.G_BA(valid_x_B)
+
+                valid_x_ABA = self.G_BA(valid_x_AB)
+                valid_x_BAB = self.G_AB(valid_x_BA)
+
+                vutils.save_image(valid_x_AB.data, '{}/x_AB_{}.png'.format(self.model_dir, step))
+                vutils.save_image(valid_x_BA.data, '{}/x_BA_{}.png'.format(self.model_dir, step))
+                vutils.save_image(valid_x_ABA.data, '{}/x_ABA_{}.png'.format(self.model_dir, step))
+                vutils.save_image(valid_x_BAB.data, '{}/x_BAB_{}.png'.format(self.model_dir, step))
 
             if step % self.save_step == self.save_step - 1:
                 print("[*] Save models to {}...".format(self.model_dir))
