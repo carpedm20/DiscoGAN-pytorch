@@ -5,7 +5,7 @@ PyTorch implementation of [Learning to Discover Cross-Domain Relations with Gene
 <img src="./assets/model.png" width="80%">
 
 **\* All samples in README.md are genearted by neural network except the first image for each row. \***  
-\* Network structure is slightly [diffferent](https://github.com/carpedm20/DiscoGAN-pytorch/blob/master/models.py#L13-L32) from the author's [code](https://github.com/SKTBrain/DiscoGAN/blob/master/discogan/model.py#L69-L125).
+\* Network structure is slightly diffferent ([here](https://github.com/carpedm20/DiscoGAN-pytorch/blob/master/models.py#L13-L32)) from the author's [code](https://github.com/SKTBrain/DiscoGAN/blob/master/discogan/model.py#L69-L125).
 
 
 ## Requirements
@@ -113,6 +113,22 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 `x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (segmentation -> image -> segmentation)
 
 <img src="assets/cityscapes_valid_x_B.png" width="30%"> <img src="assets/cityscapes_x_BA_8350.png" width="30%"> <img src="assets/cityscapes_x_BAB_8350.png" width="30%">
+
+
+### 5. Facades dataset
+
+Generation and reconstruction on dense segmentation dataset looks weird which are not included in the paper.
+
+**# iteration: 19450**:
+
+`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (image -> segmentation -> image)
+
+<img src="assets/facades_valid_x_A.png" width="30%"> <img src="assets/facades_x_AB_19450.png" width="30%"> <img src="assets/facades_x_ABA_19450.png" width="30%">
+
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (segmentation -> image -> segmentation)
+
+<img src="assets/facades_valid_x_B.png" width="30%"> <img src="assets/facades_x_BA_19450.png" width="30%"> <img src="assets/facades_x_BAB_19450.png" width="30%">
+
 
 
 ## Author
