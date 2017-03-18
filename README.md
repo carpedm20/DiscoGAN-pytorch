@@ -71,7 +71,6 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 **# iteration: 1000**: `G_AB(x_A)` and `G_BA(x_B)`
 
-<img src="./assets/edges2shoes_AB_1000.png" width="40%"> <img src="./assets/edges2shoes_BA_1000.png" width="40%">
 
 **# iteration: 10000**:
 
@@ -82,7 +81,6 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 **# iteration: 1000**: `G_AB(x_A)` and `G_BA(x_B)`
 
-<img src="./assets/facade_AB_1000.png" width="40%"> <img src="./assets/facade_BA_1000.png" width="40%">
 
 (in progress)
 
