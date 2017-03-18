@@ -117,7 +117,8 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 ### 5. Facades dataset
 
-Generation and reconstruction on dense segmentation dataset looks weird which are not included in the paper.
+Generation and reconstruction on dense segmentation dataset looks weird which are not included in the paper.  
+I guess a naive choice of `mean square error` loss for reconstruction need some change on this dataset.
 
 **# iteration: 19450**:
 
