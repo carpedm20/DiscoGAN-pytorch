@@ -47,51 +47,76 @@ To train a model:
 
 To test a model (use your `load_path`):
 
-    $ python main.py --load_path=logs/edges2shoes_2017-03-18_02-39-31 --is_train=False
+    $ python main.py --dataset=edges2handbags --load_path=logs/edges2handbags_2017-03-18_10-55-37 --num_gpu=0 --is_train=False
 
 
 ## Results
 
-### Toy dataset
+### 1. Toy dataset
 
 Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook](./notebooks/DiscoGAN.ipynb)
 
 **# iteration: 0**:
 
-<img src="./assets/toy_before.png" width="40%">
+<img src="./assets/toy_before.png" width="30%">
 
 **# iteration: 10000**:
 
-<img src="./assets/toy_after.png" width="40%">
+<img src="./assets/toy_after.png" width="30%">
 
 
-### Edges2shoes dataset
+### 2. Edges2shoes dataset
 
-**Fully trained results will be updated soon** *and the paper is lack of hyperparameters so I made a guess at them. (# of conv and deconv features)*
+**# iteration: 9600**:
 
-**# iteration: 1000**: `G_AB(x_A)` and `G_BA(x_B)`
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (color -> sketch -> color)
 
-<img src="./assets/edges2shoes_AB_1000.png" width="40%"> <img src="./assets/edges2shoes_BA_1000.png" width="40%">
+<img src="assets/edges2shoes_valid_x_B.png" width="30%"> <img src="assets/edges2shoes_x_BA_9600.png" width="30%"> <img src="assets/edges2shoes_x_BAB_9600.png" width="30%">
 
-**# iteration: 10000**:
+`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (sketch -> color -> sketch)
 
-(in progress)
-
-
-### facades dataset
-
-**# iteration: 1000**: `G_AB(x_A)` and `G_BA(x_B)`
-
-<img src="./assets/facade_AB_1000.png" width="40%"> <img src="./assets/facade_BA_1000.png" width="40%">
-
-(in progress)
+<img src="assets/edges2shoes_valid_x_A.png" width="30%"> <img src="assets/edges2shoes_x_AB_9600.png" width="30%"> <img src="assets/edges2shoes_x_ABA_9600.png" width="30%">
 
 
-### Edges2handbags dataset
+### 3. Edges2handbags dataset
 
-**# iteration: 1000**:
+**# iteration: 9500**:
 
-(in progress)
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (color -> sketch -> color)
+
+<img src="assets/edges2handbags_valid_x_B.png" width="30%"> <img src="assets/edges2handbags_x_BA_9500.png" width="30%"> <img src="assets/edges2handbags_x_BAB_9500.png" width="30%">
+
+`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (sketch -> color -> sketch)
+
+<img src="assets/edges2handbags_valid_x_A.png" width="30%"> <img src="assets/edges2handbags_x_AB_9500.png" width="30%"> <img src="assets/edges2handbags_x_ABA_9500.png" width="30%">
+
+
+### 4. Facades dataset
+
+Reconstruction looks quite weird which is not included in the paper.
+
+**# iteration: 19450**:
+
+`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (image -> segmentation -> image)
+
+<img src="assets/facades_valid_x_A.png" width="30%"> <img src="assets/facades_x_AB_19450.png" width="30%"> <img src="assets/facades_x_ABA_19450.png" width="30%">
+
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (segmentation -> image -> segmentation)
+
+<img src="assets/facades_valid_x_B.png" width="30%"> <img src="assets/facades_x_BA_19450.png" width="30%"> <img src="assets/facades_x_BAB_19450.png" width="30%">
+
+
+### 5. Cityscapes dataset
+
+**# iteration: 8350**:
+
+`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (image -> segmentation -> image)
+
+<img src="assets/cityscapes_valid_x_A.png" width="30%"> <img src="assets/cityscapes_x_AB_8350.png" width="30%"> <img src="assets/cityscapes_x_ABA_8350.png" width="30%">
+
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (segmentation -> image -> segmentation)
+
+<img src="assets/cityscapes_valid_x_B.png" width="30%"> <img src="assets/cityscapes_x_BA_8350.png" width="30%"> <img src="assets/cityscapes_x_BAB_8350.png" width="30%">
 
 
 ## Author

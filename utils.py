@@ -19,14 +19,18 @@ def prepare_dirs_and_logger(config):
     logger.addHandler(handler)
 
     if config.load_path:
-        if config.load_path.startswith(config.dataset):
-            config.model_name = config.load_path
+        if config.load_path.startswith(config.log_dir):
+            config.model_dir = config.load_path
         else:
-            config.model_name = "{}_{}".format(config.dataset, config.load_path)
+            if config.load_path.startswith(config.dataset):
+                config.model_name = config.load_path
+            else:
+                config.model_name = "{}_{}".format(config.dataset, config.load_path)
     else:
         config.model_name = "{}_{}".format(config.dataset, get_time())
 
-    config.model_dir = os.path.join(config.log_dir, config.model_name)
+    if not hasattr(config, 'model_dir'):
+        config.model_dir = os.path.join(config.log_dir, config.model_name)
     config.data_path = os.path.join(config.data_dir, config.dataset)
 
     for path in [config.log_dir, config.data_dir, config.model_dir]:
