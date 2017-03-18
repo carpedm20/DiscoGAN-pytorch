@@ -162,6 +162,10 @@ class Trainer(object):
                 A_loader, B_loader = iter(self.a_data_loader), iter(self.b_data_loader)
                 x_A, x_B = A_loader.next(), B_loader.next()
 
+            if x_A.size(0) != x_B.size(0):
+                print("[!] Sampled dataset from A and B have different # of data. Try resampling...")
+                continue
+
             if self.num_gpu > 0:
                 x_A, x_B = Variable(x_A.cuda()), Variable(x_B.cuda())
             else:
