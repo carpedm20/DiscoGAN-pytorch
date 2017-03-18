@@ -52,7 +52,7 @@ To test a model (use your `load_path`):
 
 ## Results
 
-### Toy dataset
+### 1. Toy dataset
 
 Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook](./notebooks/DiscoGAN.ipynb)
 
@@ -65,21 +65,53 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 <img src="./assets/toy_after.png" width="40%">
 
 
-### Edges2shoes dataset
+### 2. Edges2shoes dataset
 
 **Fully trained results will be updated soon** *and the paper is lack of hyperparameters so I made a guess at them. (# of conv and deconv features)*
 
-**# iteration: 1000**: `G_AB(x_A)` and `G_BA(x_B)`
+**# iteration: 1800**:
 
+`x_A` -> `G_AB(x_A)`
+
+<img src="assets/edges2shoes_valid_x_B.png" width="40%"> <img src="assets/edges2shoes_x_BA_1850.png" width="40%">
+
+`x_B` -> `G_BA(x_B)`
+
+<img src="assets/edges2shoes_valid_x_A.png" width="40%"> <img src="assets/edges2shoes_x_AB_1850.png" width="40%">
 
 **# iteration: 10000**:
 
 (in progress)
 
 
-### facades dataset
+### 3. Edges2handbags dataset
 
-**# iteration: 1000**: `G_AB(x_A)` and `G_BA(x_B)`
+**# iteration: 1000**:
+
+`x_A` -> `G_AB(x_A)`
+
+<img src="assets/edges2handbags_valid_x_B.png" width="40%"> <img src="assets/edges2handbags_x_BA_1200.png" width="40%">
+
+`x_B` -> `G_BA(x_B)`
+
+<img src="assets/edges2handbags_valid_x_A.png" width="40%"> <img src="assets/edges2handbags_x_AB_1200.png" width="40%">
+
+**# iteration: 10000**:
+
+(in progress)
+
+
+### 4. Facades dataset
+
+**# iteration: 2000**:
+
+`x_A` -> `G_AB(x_A)`
+
+<img src="assets/facades_valid_x_B.png" width="40%"> <img src="assets/facades_x_BA_2500.png" width="40%">
+
+`x_B` -> `G_BA(x_B)`
+
+<img src="assets/facades_valid_x_A.png" width="40%"> <img src="assets/facades_x_AB_2500.png" width="40%">
 
 
 (in progress)
