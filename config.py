@@ -41,15 +41,18 @@ train_arg.add_argument('--weight_decay', type=float, default=0.0001)
 
 # Misc
 misc_arg = add_argument_group('Misc')
+misc_arg.add_argument('--load_path', type=str, default='')
 misc_arg.add_argument('--log_step', type=int, default=50)
 misc_arg.add_argument('--save_step', type=int, default=500)
 misc_arg.add_argument('--num_log_samples', type=int, default=3)
 misc_arg.add_argument('--log_level', type=str, default='INFO', choices=['INFO', 'DEBUG', 'WARN'])
 misc_arg.add_argument('--log_dir', type=str, default='logs')
 misc_arg.add_argument('--data_dir', type=str, default='data')
-misc_arg.add_argument('--output_dir', type=str, default='outputs')
-misc_arg.add_argument('--load_path', type=str, default='')
 misc_arg.add_argument('--num_gpu', type=str2bool, default=1)
+misc_arg.add_argument('--test_data_path', type=str, default=None,
+                      help='directory with images which will be used in test sample generation')
+misc_arg.add_argument('--sample_per_image', type=int, default=64,
+                      help='# of sample per image during test sample generation')
 misc_arg.add_argument('--random_seed', type=int, default=123)
 
 def get_config():

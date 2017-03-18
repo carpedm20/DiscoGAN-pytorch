@@ -12,6 +12,7 @@ import torchvision.utils as vutils
 from torch.autograd import Variable
 
 from models import *
+from data_loader import get_loader
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -104,15 +105,25 @@ class Trainer(object):
             print("[!] No checkpoint found in {}...".format(self.load_path))
             return
 
-        self.start_step = int(os.path.basename(paths[-1].split('.')[0].split('_')[-1]))
+        idxes = [int(os.path.basename(path.split('.')[0].split('_')[-1])) for path in paths]
+        self.start_step = max(idxes)
 
-        self.G_AB.load_state_dict(torch.load('{}/G_AB_{}.pth'.format(self.load_path, self.start_step)))
-        self.G_BA.load_state_dict(torch.load('{}/G_BA_{}.pth'.format(self.load_path, self.start_step)))
+        if self.num_gpu == 0:
+            map_location = lambda storage, loc: storage
+        else: 
+            map_location = None
 
-        self.D_A.load_state_dict(torch.load('{}/D_A_{}.pth'.format(self.load_path, self.start_step)))
-        self.D_B.load_state_dict(torch.load('{}/D_B_{}.pth'.format(self.load_path, self.start_step)))
+        G_AB_filename = '{}/G_AB_{}.pth'.format(self.load_path, self.start_step)
+        self.G_AB.load_state_dict(torch.load(G_AB_filename, map_location=map_location))
+        self.G_BA.load_state_dict(
+            torch.load('{}/G_BA_{}.pth'.format(self.load_path, self.start_step), map_location=map_location))
 
-        print("[*] Load {} th step model complete!".format(self.start_step))
+        self.D_A.load_state_dict(
+            torch.load('{}/D_A_{}.pth'.format(self.load_path, self.start_step), map_location=map_location))
+        self.D_B.load_state_dict(
+            torch.load('{}/D_B_{}.pth'.format(self.load_path, self.start_step), map_location=map_location))
+
+        print("[*] Model loaded: {}".format(G_AB_filename))
 
     def train(self):
         d = nn.MSELoss()
@@ -147,10 +158,7 @@ class Trainer(object):
             lr=self.lr, betas=(self.beta1, self.beta2))
 
         A_loader, B_loader = iter(self.a_data_loader), iter(self.b_data_loader)
-        valid_x_A, valid_x_B = Variable(A_loader.next()), Variable(B_loader.next())
-
-        if self.num_gpu > 0:
-            valid_x_A, valid_x_B = valid_x_A.cuda(), valid_x_B.cuda()
+        valid_x_A, valid_x_B = self._get_variable(A_loader.next()), self._get_variable(B_loader.next())
 
         vutils.save_image(valid_x_A.data, '{}/valid_x_A.png'.format(self.model_dir))
         vutils.save_image(valid_x_B.data, '{}/valid_x_B.png'.format(self.model_dir))
@@ -161,11 +169,7 @@ class Trainer(object):
             except StopIteration:
                 A_loader, B_loader = iter(self.a_data_loader), iter(self.b_data_loader)
                 x_A, x_B = A_loader.next(), B_loader.next()
-
-            if self.num_gpu > 0:
-                x_A, x_B = Variable(x_A.cuda()), Variable(x_B.cuda())
-            else:
-                x_A, x_B = Variable(x_A), Variable(x_B)
+            x_A, x_B = self._get_variable(x_A), self._get_variable(x_B)
 
             batch_size = x_A.size(0)
             real_tensor.data.resize_(batch_size).fill_(real_label)
@@ -225,16 +229,8 @@ class Trainer(object):
                       format(step, self.max_step, l_const_A.data[0], l_const_B.data[0],  
                              l_gan_A.data[0], l_gan_B.data[0]))
 
-                valid_x_AB = self.G_AB(valid_x_A)
-                valid_x_BA = self.G_BA(valid_x_B)
-
-                valid_x_ABA = self.G_BA(valid_x_AB)
-                valid_x_BAB = self.G_AB(valid_x_BA)
-
-                vutils.save_image(valid_x_AB.data, '{}/x_AB_{}.png'.format(self.model_dir, step))
-                vutils.save_image(valid_x_BA.data, '{}/x_BA_{}.png'.format(self.model_dir, step))
-                vutils.save_image(valid_x_ABA.data, '{}/x_ABA_{}.png'.format(self.model_dir, step))
-                vutils.save_image(valid_x_BAB.data, '{}/x_BAB_{}.png'.format(self.model_dir, step))
+                self.generate_with_A(valid_x_A, self.model_dir, idx=step)
+                self.generate_with_B(valid_x_B, self.model_dir, idx=step)
 
             if step % self.save_step == self.save_step - 1:
                 print("[*] Save models to {}...".format(self.model_dir))
@@ -245,5 +241,59 @@ class Trainer(object):
                 torch.save(self.D_A.state_dict(), '{}/D_A_{}.pth'.format(self.model_dir, step))
                 torch.save(self.D_B.state_dict(), '{}/D_B_{}.pth'.format(self.model_dir, step))
 
+    def generate_with_A(self, inputs, path, idx=None):
+        x_AB = self.G_AB(inputs)
+        x_ABA = self.G_BA(x_AB)
+
+        x_AB_path = '{}/{}_x_AB.png'.format(path, idx)
+        x_ABA_path = '{}/{}_x_ABA.png'.format(path, idx)
+
+        vutils.save_image(x_AB.data, x_AB_path)
+        print("[*] Samples saved: {}".format(x_AB_path))
+
+        vutils.save_image(x_ABA.data, x_ABA_path)
+        print("[*] Samples saved: {}".format(x_ABA_path))
+
+    def generate_with_B(self, inputs, path, idx=None):
+        x_BA = self.G_BA(inputs)
+        x_BAB = self.G_AB(x_BA)
+
+        x_BA_path = '{}/{}_x_BA.png'.format(path, idx)
+        x_BAB_path = '{}/{}_x_BAB.png'.format(path, idx)
+
+        vutils.save_image(x_BA.data, x_BA_path)
+        print("[*] Samples saved: {}".format(x_BA_path))
+
+        vutils.save_image(x_BAB.data, x_BAB_path)
+        print("[*] Samples saved: {}".format(x_BAB_path))
+
     def test(self):
-        pass
+        batch_size = self.config.sample_per_image
+        A_loader, B_loader = iter(self.a_data_loader), iter(self.b_data_loader)
+
+        test_dir = os.path.join(self.model_dir, 'test')
+        if not os.path.exists(test_dir):
+            os.makedirs(test_dir)
+
+        step = 0
+        while True:
+            try:
+                x_A, x_B = self._get_variable(A_loader.next()), self._get_variable(B_loader.next())
+            except StopIteration:
+                print("[!] Test sample generation finished. Samples are in {}".format(test_dir))
+                break
+
+            vutils.save_image(x_A.data, '{}/{}_x_A.png'.format(test_dir, step))
+            vutils.save_image(x_B.data, '{}/{}_x_B.png'.format(test_dir, step))
+
+            self.generate_with_A(x_A, test_dir, idx=step)
+            self.generate_with_B(x_B, test_dir, idx=step)
+
+            step += 1
+
+    def _get_variable(self, inputs):
+        if self.num_gpu > 0:
+            out = Variable(inputs.cuda())
+        else:
+            out = Variable(inputs)
+        return out

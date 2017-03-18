@@ -46,15 +46,16 @@ def pix2pix_split_images(root):
 class Dataset(torch.utils.data.Dataset):
     def __init__(self, root, scale_size, data_type):
         self.root = root
-        self.name = os.path.basename(root)
-
         if not os.path.exists(self.root):
             raise Exception("[!] {} not exists.".format(root))
 
+        self.name = os.path.basename(root)
         if self.name in PIX2PIX_DATASETS:
             pix2pix_split_images(self.root)
 
         self.paths = glob(os.path.join(self.root, '{}/*'.format(data_type)))
+        if len(self.paths) == 0:
+            raise Exception("No images are found in {}".format(self.root))
         self.shape = list(Image.open(self.paths[0]).size) + [3]
 
         self.transform = transforms.Compose([
