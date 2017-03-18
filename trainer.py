@@ -271,6 +271,20 @@ class Trainer(object):
         vutils.save_image(x_BAB.data, x_BAB_path)
         print("[*] Samples saved: {}".format(x_BAB_path))
 
+    def generate_infinitely(self, inputs, path, input_type, count=10, nrow=2, idx=None):
+        if input_type.lower() == "a":
+            iterator = [self.G_AB, self.G_BA] * count
+        elif input_type.lower() == "b":
+            iterator = [self.G_BA, self.G_AB] * count
+
+        out = inputs
+        for step, model in enumerate(iterator):
+            out = model(out)
+
+            out_path = '{}/{}_x_{}_#{}.png'.format(path, idx, input_type, step)
+            vutils.save_image(out.data, out_path, nrow=nrow)
+            print("[*] Samples saved: {}".format(out_path))
+
     def test(self):
         batch_size = self.config.sample_per_image
         A_loader, B_loader = iter(self.a_data_loader), iter(self.b_data_loader)
@@ -292,6 +306,9 @@ class Trainer(object):
 
             self.generate_with_A(x_A, test_dir, idx=step)
             self.generate_with_B(x_B, test_dir, idx=step)
+
+            self.generate_infinitely(x_A, test_dir, input_type="A", count=10, nrow=4, idx=step)
+            self.generate_infinitely(x_B, test_dir, input_type="B", count=10, nrow=4, idx=step)
 
             step += 1
 

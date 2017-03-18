@@ -44,13 +44,13 @@ def pix2pix_split_images(root):
         b_image.save(b_image_path)
 
 class Dataset(torch.utils.data.Dataset):
-    def __init__(self, root, scale_size, data_type):
+    def __init__(self, root, scale_size, data_type, skip_pix2pix_processing=False):
         self.root = root
         if not os.path.exists(self.root):
             raise Exception("[!] {} not exists.".format(root))
 
         self.name = os.path.basename(root)
-        if self.name in PIX2PIX_DATASETS:
+        if self.name in PIX2PIX_DATASETS and not skip_pix2pix_processing:
             pix2pix_split_images(self.root)
 
         self.paths = glob(os.path.join(self.root, '{}/*'.format(data_type)))
@@ -71,8 +71,11 @@ class Dataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.paths)
 
-def get_loader(root, batch_size, scale_size, num_workers=2, shuffle=True):
-    a_data_set, b_data_set = Dataset(root, scale_size, "A"), Dataset(root, scale_size, "B")
+def get_loader(root, batch_size, scale_size, num_workers=2,
+               skip_pix2pix_processing=False, shuffle=True):
+    a_data_set, b_data_set = \
+        Dataset(root, scale_size, "A", skip_pix2pix_processing), \
+        Dataset(root, scale_size, "B", skip_pix2pix_processing)
     a_data_loader = torch.utils.data.DataLoader(dataset=a_data_set,
                                                 batch_size=batch_size,
                                                 shuffle=True,

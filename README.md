@@ -77,6 +77,10 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 <img src="assets/edges2shoes_valid_x_A.png" width="30%"> <img src="assets/edges2shoes_x_AB_9600.png" width="30%"> <img src="assets/edges2shoes_x_ABA_9600.png" width="30%">
 
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` -> `G_AB(G_BA(G_AB(x_A)))` -> `G_BA(G_AB(G_BA(G_AB(x_A))))` -> ...
+
+<img src="assets/edges2shoes_repetitive_0_x_A_0.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_1.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_2.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_3.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_4.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_4.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_5.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_6.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_7.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_8.png" width="18%"> <img src="assets/edges2shoes_repetitive_0_x_A_9.png" width="18%">
+
 
 ### 3. Edges2handbags dataset
 
@@ -89,6 +93,10 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 `x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (sketch -> color -> sketch)
 
 <img src="assets/edges2handbags_valid_x_A.png" width="30%"> <img src="assets/edges2handbags_x_AB_9500.png" width="30%"> <img src="assets/edges2handbags_x_ABA_9500.png" width="30%">
+
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` -> `G_AB(G_BA(G_AB(x_A)))` -> `G_BA(G_AB(G_BA(G_AB(x_A))))` -> ...
+
+<img src="assets/edges2handbags_repetitive_0_x_A_0.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_1.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_2.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_3.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_4.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_4.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_5.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_6.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_7.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_8.png" width="18%"> <img src="assets/edges2handbags_repetitive_0_x_A_9.png" width="18%">
 
 
 ### 4. Facades dataset
