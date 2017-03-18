@@ -67,38 +67,28 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 ### 2. Edges2shoes dataset
 
-**Fully trained results will be updated soon** *and the paper is lack of hyperparameters so I made a guess at them. (# of conv and deconv features)*
-
-**# iteration: 3000**:
+**# iteration: 9600**:
 
 `x_A` -> `G_AB(x_A)`
 
-<img src="assets/edges2shoes_valid_x_B.png" width="40%"> <img src="assets/edges2shoes_x_BA_3000.png" width="40%">
+<img src="assets/edges2shoes_valid_x_B.png" width="40%"> <img src="assets/edges2shoes_x_BA_9600.png" width="40%">
 
 `x_B` -> `G_BA(x_B)`
 
-<img src="assets/edges2shoes_valid_x_A.png" width="40%"> <img src="assets/edges2shoes_x_AB_3000.png" width="40%">
-
-**# iteration: 10000**:
-
-(in progress)
+<img src="assets/edges2shoes_valid_x_A.png" width="40%"> <img src="assets/edges2shoes_x_AB_9600.png" width="40%">
 
 
 ### 3. Edges2handbags dataset
 
-**# iteration: 3000**:
+**# iteration: 9500**:
 
 `x_A` -> `G_AB(x_A)`
 
-<img src="assets/edges2handbags_valid_x_B.png" width="40%"> <img src="assets/edges2handbags_x_BA_3000.png" width="40%">
+<img src="assets/edges2handbags_valid_x_B.png" width="40%"> <img src="assets/edges2handbags_x_BA_9500.png" width="40%">
 
 `x_B` -> `G_BA(x_B)`
 
-<img src="assets/edges2handbags_valid_x_A.png" width="40%"> <img src="assets/edges2handbags_x_AB_3000.png" width="40%">
-
-**# iteration: 10000**:
-
-(in progress)
+<img src="assets/edges2handbags_valid_x_A.png" width="40%"> <img src="assets/edges2handbags_x_AB_9500.png" width="40%">
 
 
 ### 4. Facades dataset
