@@ -47,7 +47,7 @@ To train a model:
 
 To test a model (use your `load_path`):
 
-    $ python main.py --load_path=logs/edges2shoes_2017-03-18_02-39-31 --is_train=False
+    $ python main.py --dataset=edges2handbags --load_path=logs/edges2handbags_2017-03-18_10-55-37 --num_gpu=0 --is_train=False
 
 
 ## Results
