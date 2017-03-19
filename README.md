@@ -68,7 +68,24 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 <img src="./assets/toy_after.png" width="30%">
 
 
-### 2. Edges2shoes dataset
+### 2. Shoes2handbags dataset
+
+**# iteration: 11200**:
+
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (color -> sketch -> color)
+
+<img src="assets/shoes2handbags_valid_x_B.png" width="30%"> <img src="assets/shoes2handbags_x_BA_11200.png" width="30%"> <img src="assets/shoes2handbags_x_BAB_11200.png" width="30%">
+
+`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (sketch -> color -> sketch)
+
+<img src="assets/shoes2handbags_valid_x_A.png" width="30%"> <img src="assets/shoes2handbags_x_AB_11200.png" width="30%"> <img src="assets/shoes2handbags_x_ABA_11200.png" width="30%">
+
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` -> `G_AB(G_BA(G_AB(x_A)))` -> `G_BA(G_AB(G_BA(G_AB(x_A))))` -> ...
+
+<img src="assets/shoes2handbags_repetitive_0_x_A_0.png" width="13%"> <img src="assets/shoes2handbags_repetitive_0_x_A_1.png" width="13%"> <img src="assets/shoes2handbags_repetitive_0_x_A_2.png" width="13%"> <img src="assets/shoes2handbags_repetitive_0_x_A_3.png" width="13%"> <img src="assets/shoes2handbags_repetitive_0_x_A_4.png" width="13%"> <img src="assets/shoes2handbags_repetitive_0_x_A_5.png" width="13%"> <img src="assets/shoes2handbags_repetitive_0_x_A_6.png" width="13%">
+
+
+### 3. Edges2shoes dataset
 
 **# iteration: 9600**:
 
@@ -85,7 +102,7 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 <img src="assets/edges2shoes_repetitive_0_x_A_0.png" width="13%"> <img src="assets/edges2shoes_repetitive_0_x_A_1.png" width="13%"> <img src="assets/edges2shoes_repetitive_0_x_A_2.png" width="13%"> <img src="assets/edges2shoes_repetitive_0_x_A_3.png" width="13%"> <img src="assets/edges2shoes_repetitive_0_x_A_4.png" width="13%"> <img src="assets/edges2shoes_repetitive_0_x_A_5.png" width="13%"> <img src="assets/edges2shoes_repetitive_0_x_A_6.png" width="13%">
 
 
-### 3. Edges2handbags dataset
+### 4. Edges2handbags dataset
 
 **# iteration: 9500**:
 
@@ -102,7 +119,7 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 <img src="assets/edges2handbags_repetitive_0_x_A_0.png" width="13%"> <img src="assets/edges2handbags_repetitive_0_x_A_1.png" width="13%"> <img src="assets/edges2handbags_repetitive_0_x_A_2.png" width="13%"> <img src="assets/edges2handbags_repetitive_0_x_A_3.png" width="13%"> <img src="assets/edges2handbags_repetitive_0_x_A_4.png" width="13%"> <img src="assets/edges2handbags_repetitive_0_x_A_5.png" width="13%"> <img src="assets/edges2handbags_repetitive_0_x_A_6.png" width="13%">
 
 
-### 4. Cityscapes dataset
+### 5. Cityscapes dataset
 
 **# iteration: 8350**:
 
@@ -115,7 +132,7 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 <img src="assets/cityscapes_valid_x_B.png" width="30%"> <img src="assets/cityscapes_x_BA_8350.png" width="30%"> <img src="assets/cityscapes_x_BAB_8350.png" width="30%">
 
 
-### 5. Facades dataset
+### 6. Facades dataset
 
 Generation and reconstruction on dense segmentation dataset looks weird which are not included in the paper.  
 I guess a naive choice of `mean square error` loss for reconstruction need some change on this dataset.
