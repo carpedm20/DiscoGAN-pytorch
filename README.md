@@ -72,11 +72,11 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 
 **# iteration: 11200**:
 
-`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (color -> sketch -> color)
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (shoe -> handbag -> shoe)
 
 <img src="assets/shoes2handbags_valid_x_B.png" width="30%"> <img src="assets/shoes2handbags_x_BA_11200.png" width="30%"> <img src="assets/shoes2handbags_x_BAB_11200.png" width="30%">
 
-`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (sketch -> color -> sketch)
+`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (handbag -> shoe -> handbag)
 
 <img src="assets/shoes2handbags_valid_x_A.png" width="30%"> <img src="assets/shoes2handbags_x_AB_11200.png" width="30%"> <img src="assets/shoes2handbags_x_ABA_11200.png" width="30%">
 
@@ -132,7 +132,20 @@ Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook]
 <img src="assets/cityscapes_valid_x_B.png" width="30%"> <img src="assets/cityscapes_x_BA_8350.png" width="30%"> <img src="assets/cityscapes_x_BAB_8350.png" width="30%">
 
 
-### 6. Facades dataset
+### 6. Map dataset
+
+**# iteration: 22200**:
+
+`x_B` -> `G_BA(x_B)` -> `G_AB(G_BA(x_B))` (image -> segmentation -> image)
+
+<img src="assets/maps_valid_x_A.png" width="30%"> <img src="assets/maps_x_AB_22200.png" width="30%"> <img src="assets/maps_x_ABA_22200.png" width="30%">
+
+`x_A` -> `G_AB(x_A)` -> `G_BA(G_AB(x_A))` (segmentation -> image -> segmentation)
+
+<img src="assets/maps_valid_x_B.png" width="30%"> <img src="assets/maps_x_BA_22200.png" width="30%"> <img src="assets/maps_x_BAB_22200.png" width="30%">
+
+
+### 7. Facades dataset
 
 Generation and reconstruction on dense segmentation dataset looks weird which are not included in the paper.  
 I guess a naive choice of `mean square error` loss for reconstruction need some change on this dataset.
