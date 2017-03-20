@@ -4,7 +4,7 @@ PyTorch implementation of [Learning to Discover Cross-Domain Relations with Gene
 
 <img src="./assets/model.png" width="80%">
 
-**\* All samples in README.md are genearted by neural network except the first image for each row. \***  
+**\* All samples in README.md are genearted by neural network except the first image for each row.**  
 \* Network structure is slightly diffferent ([here](https://github.com/carpedm20/DiscoGAN-pytorch/blob/master/models.py#L13-L32)) from the author's [code](https://github.com/SKTBrain/DiscoGAN/blob/master/discogan/model.py#L69-L125).
 
 
