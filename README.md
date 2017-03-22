@@ -43,6 +43,18 @@ or you can use your own dataset by placing images like:
     │       └── ...
     └── download_dataset.sh
 
+**All images in each dataset should have same size** like using [imagemagick](https://www.imagemagick.org/script/index.php):
+
+    # for Ubuntu
+    $ sudo apt-get install imagemagick
+    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/A *.jpg
+    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/B *.jpg
+
+    # for Mac
+    $ brew install imagemagick
+    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/A *.jpg
+    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/B *.jpg
+
 To train a model:
 
     $ python main.py --dataset=edges2shoes --num_gpu=1
