@@ -55,6 +55,9 @@ or you can use your own dataset by placing images like:
     $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/A *.jpg
     $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/B *.jpg
 
+    # for scale and center crop
+    $ mogrify -resize 256x256^ -gravity center -crop 256x256+0+0 -quality 100 -path ../A *.jpg
+
 To train a model:
 
     $ python main.py --dataset=edges2shoes --num_gpu=1
