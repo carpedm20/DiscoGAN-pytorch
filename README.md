@@ -47,16 +47,16 @@ or you can use your own dataset by placing images like:
 
     # for Ubuntu
     $ sudo apt-get install imagemagick
-    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/A *.jpg
-    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/B *.jpg
+    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/A/*.jpg
+    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/B/*.jpg
 
     # for Mac
     $ brew install imagemagick
-    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/A *.jpg
-    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/B *.jpg
+    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/A/*.jpg
+    $ mogrify -resize 256x256! -quality 100 -path YOUR_DATASET_NAME/B/*.jpg
 
     # for scale and center crop
-    $ mogrify -resize 256x256^ -gravity center -crop 256x256+0+0 -quality 100 -path ../A *.jpg
+    $ mogrify -resize 256x256^ -gravity center -crop 256x256+0+0 -quality 100 -path ../A/*.jpg
 
 To train a model:
 
@@ -72,7 +72,7 @@ To test a model (use your `load_path`):
 
 ### 1. Toy dataset
 
-Result of samples from 2-dimentional Gaussian mixture models. [IPython notebook](./notebooks/DiscoGAN.ipynb)
+Result of samples from 2-dimensional Gaussian mixture models. [IPython notebook](./notebooks/DiscoGAN.ipynb)
 
 **# iteration: 0**:
 
