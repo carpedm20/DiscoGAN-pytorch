@@ -32,6 +32,7 @@ class Trainer(object):
         self.num_gpu = config.num_gpu
         self.dataset = config.dataset
 
+        self.loss = config.loss
         self.lr = config.lr
         self.beta1 = config.beta1
         self.beta2 = config.beta2
@@ -189,8 +190,16 @@ class Trainer(object):
             x_ABA = self.G_BA(x_AB).detach()
             x_BAB = self.G_AB(x_BA).detach()
 
-            l_d_A_real, l_d_A_fake = bce(self.D_A(x_A), real_tensor), bce(self.D_A(x_BA), fake_tensor)
-            l_d_B_real, l_d_B_fake = bce(self.D_B(x_B), real_tensor), bce(self.D_B(x_AB), fake_tensor)
+            if self.loss == "log_prob":
+                l_d_A_real, l_d_A_fake = bce(self.D_A(x_A), real_tensor), bce(self.D_A(x_BA), fake_tensor)
+                l_d_B_real, l_d_B_fake = bce(self.D_B(x_B), real_tensor), bce(self.D_B(x_AB), fake_tensor)
+            elif self.loss == "least_square":
+                l_d_A_real, l_d_A_fake = \
+                    0.5 * torch.mean((self.D_A(x_A) - 1)**2), 0.5 * torch.mean((self.D_A(x_BA))**2)
+                l_d_B_real, l_d_B_fake = \
+                    0.5 * torch.mean((self.D_B(x_B) - 1)**2), 0.5 * torch.mean((self.D_B(x_AB))**2)
+            else:
+                raise Exception("[!] Unkown loss type: {}".format(self.loss))
 
             l_d_A = l_d_A_real + l_d_A_fake
             l_d_B = l_d_B_real + l_d_B_fake
@@ -213,8 +222,14 @@ class Trainer(object):
             l_const_A = d(x_ABA, x_A)
             l_const_B = d(x_BAB, x_B)
 
-            l_gan_A = bce(self.D_A(x_BA), real_tensor)
-            l_gan_B = bce(self.D_B(x_AB), real_tensor)
+            if self.loss == "log_prob":
+                l_gan_A = bce(self.D_A(x_BA), real_tensor)
+                l_gan_B = bce(self.D_B(x_AB), real_tensor)
+            elif self.loss == "least_square":
+                l_gan_A = 0.5 * torch.mean((self.D_A(x_BA) - 1)**2)
+                l_gan_B = 0.5 * torch.mean((self.D_B(x_AB) - 1)**2)
+            else:
+                raise Exception("[!] Unkown loss type: {}".format(self.loss))
 
             l_g = l_gan_A + l_gan_B + l_const_A + l_const_B
 
