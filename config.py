@@ -55,6 +55,8 @@ misc_arg.add_argument('--test_data_path', type=str, default=None,
 misc_arg.add_argument('--sample_per_image', type=int, default=64,
                       help='# of sample per image during test sample generation')
 misc_arg.add_argument('--random_seed', type=int, default=123)
+misc_arg.add_argument('--skip_pix2pix_processing', type=str2bool, default=False,
+                      help='just for fast debugging in poor cpu machine')
 
 def get_config():
     config, unparsed = parser.parse_known_args()
