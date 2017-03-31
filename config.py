@@ -37,7 +37,8 @@ train_arg.add_argument('--max_step', type=int, default=500000)
 train_arg.add_argument('--lr', type=float, default=0.0002)
 train_arg.add_argument('--beta1', type=float, default=0.5)
 train_arg.add_argument('--beta2', type=float, default=0.999)
-train_arg.add_argument('--loss', type=str, default="log_prob", choices=["log_prob", "least_square"])
+train_arg.add_argument('--loss', type=str, default="log_prob",
+                       choices=["log_prob"], help="least square loss doesn't work well")
 train_arg.add_argument('--weight_decay', type=float, default=0.0001)
 
 # Misc
