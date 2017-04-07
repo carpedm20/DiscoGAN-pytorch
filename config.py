@@ -50,7 +50,7 @@ misc_arg.add_argument('--num_log_samples', type=int, default=3)
 misc_arg.add_argument('--log_level', type=str, default='INFO', choices=['INFO', 'DEBUG', 'WARN'])
 misc_arg.add_argument('--log_dir', type=str, default='logs')
 misc_arg.add_argument('--data_dir', type=str, default='data')
-misc_arg.add_argument('--num_gpu', type=str2bool, default=1)
+misc_arg.add_argument('--num_gpu', type=int, default=1)
 misc_arg.add_argument('--test_data_path', type=str, default=None,
                       help='directory with images which will be used in test sample generation')
 misc_arg.add_argument('--sample_per_image', type=int, default=64,

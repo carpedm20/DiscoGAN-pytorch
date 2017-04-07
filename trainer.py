@@ -51,11 +51,17 @@ class Trainer(object):
 
         self.build_model()
 
-        if self.num_gpu > 0:
+        if self.num_gpu == 1:
             self.G_AB.cuda()
             self.G_BA.cuda()
             self.D_A.cuda()
             self.D_B.cuda()
+
+        elif self.num_gpu > 1:
+            self.G_AB = nn.DataParallel(self.G_AB.cuda(),device_ids=range(self.num_gpu))
+            self.G_BA = nn.DataParallel(self.G_BA.cuda(),device_ids=range(self.num_gpu))
+            self.D_A = nn.DataParallel(self.D_A.cuda(),device_ids=range(self.num_gpu))
+            self.D_B = nn.DataParallel(self.D_B.cuda(),device_ids=range(self.num_gpu))
 
         if self.load_path:
             self.load_model()
@@ -111,7 +117,7 @@ class Trainer(object):
 
         if self.num_gpu == 0:
             map_location = lambda storage, loc: storage
-        else: 
+        else:
             map_location = None
 
         G_AB_filename = '{}/G_AB_{}.pth'.format(self.load_path, self.start_step)
@@ -241,11 +247,11 @@ class Trainer(object):
                       format(step, self.max_step, l_d.data[0], l_g.data[0]))
 
                 print("[{}/{}] l_d_A_real: {:.4f} l_d_A_fake: {:.4f}, l_d_B_real: {:.4f}, l_d_B_fake: {:.4f}". \
-                      format(step, self.max_step, l_d_A_real.data[0], l_d_A_fake.data[0],  
+                      format(step, self.max_step, l_d_A_real.data[0], l_d_A_fake.data[0],
                              l_d_B_real.data[0], l_d_B_fake.data[0]))
 
                 print("[{}/{}] l_const_A: {:.4f} l_const_B: {:.4f}, l_gan_A: {:.4f}, l_gan_B: {:.4f}". \
-                      format(step, self.max_step, l_const_A.data[0], l_const_B.data[0],  
+                      format(step, self.max_step, l_const_A.data[0], l_const_B.data[0],
                              l_gan_A.data[0], l_gan_B.data[0]))
 
                 self.generate_with_A(valid_x_A, self.model_dir, idx=step)
