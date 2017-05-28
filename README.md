@@ -176,6 +176,13 @@ I guess a naive choice of `mean square error` loss for reconstruction need some 
 <img src="assets/facades_valid_x_B.png" width="30%"> <img src="assets/facades_x_BA_19450.png" width="30%"> <img src="assets/facades_x_BAB_19450.png" width="30%">
 
 
+## Related works
+
+- [DCGAN-tensorflow](https://github.com/carpedm20/DCGAN-tensorflow)
+- [BEGAN-tensorflow](https://github.com/carpedm20/BEGAN-tensorflow)
+- [simulated-unsupervised-tensorflow](https://github.com/carpedm20/simulated-unsupervised-tensorflow)
+
+
 
 ## Author
 
